@@ -36,27 +36,36 @@ for image_class in os.listdir(data_dir):
 # load data
 # build a dataset on the fly using tf.keras which will automatically create a dataset from our images
 data = tf.keras.utils.image_dataset_from_directory('data')
+
+"""
 # convert it to a numpy iterator (allows us to access our data pipeline)
 data_iterator = data.as_numpy_iterator()
 # get a batch from the iterator (allows us to access our data pipeline itself)
 batch = data_iterator.next()
 
-"""
 # visualize a batch
 fig, ax = plt.subplots(ncols=4, figsize=(20, 20))
 for idx, img in enumerate(batch[0][:4]):
     ax[idx].imshow(img.astype(int))
     ax[idx].title.set_text(batch[1][idx])
-    plt.show()
 """
 
 # pre-process data
 # scale data using map function (x is our image and y is the key)
 data = data.map(lambda x, y: (x/255, y))
+# convert it to a numpy iterator (allows us to access our data pipeline)
 scaled_iterator = data.as_numpy_iterator()
+# get a batch from the iterator (allows us to access our data pipeline itself)
 batch = scaled_iterator.next()
 
-print(batch[0].min())
-print(batch[0].max())
+# split data
+train_size = int(len(data)*.7)
+validation_size = int(len(data)*.2)
+test_size = int(len(data)*.1)+1
+
+# use take and skip methods (how many batches we want to allocate for each split we declared)
+train = data.take(train_size)
+validation = data.skip(train_size).take(validation_size)
+test_size = data.skip(train_size+validation_size).take(test_size)
 
 
