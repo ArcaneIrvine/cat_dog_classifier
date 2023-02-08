@@ -1,13 +1,13 @@
-import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
-import matplotlib
 import cv2
 import imghdr
 import os
 
+from matplotlib import pyplot as plt
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
+from keras.metrics import Precision, Recall, BinaryAccuracy
 
 # avoid oom errors by setting gpu memory consumption growth
 # grab all the gpus available in the machine
@@ -130,3 +130,18 @@ fig.suptitle('Accuracy', fontsize=20)
 plt.legend(loc='upper left')
 plt.show()
 
+# Evaluate performance
+# define some instances
+pre = Precision()
+re = Recall()
+acc = BinaryAccuracy()
+
+# loop through each batch in our test data and make a prediction
+for batch in test_size.as_numpy_iterator():
+    x, y = batch
+    yhat = model.predict(x)
+    pre.update_state(y, yhat)
+    re.update_state(y, yhat)
+    acc.update_state(y, yhat)
+
+print(f'Precision:{pre.result().numpy()}, Recall:{re.result().numpy()}, Accuracy:{acc.result().numpy()}')
