@@ -1,10 +1,12 @@
-import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import matplotlib
 import cv2
 import imghdr
 import os
+
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
 
 # avoid oom errors by setting gpu memory consumption growth
 # grab all the gpus available in the machine
@@ -67,5 +69,42 @@ test_size = int(len(data)*.1)+1
 train = data.take(train_size)
 validation = data.skip(train_size).take(validation_size)
 test_size = data.skip(train_size+validation_size).take(test_size)
+
+# Deep Model
+# declare our model using the Sequential api
+model = Sequential()
+# add layers to the model
+
+"""
+add a convolution with 16 filters 3x3 in size and a stride of 1. Relu activation
+that will convert any negative values to 0 and anything positive will remain unchanged.
+Then also define what the input shape looks like so 256x256 pixels wired by 3 channels deep 
+(basically scans over an image and tries to condense or extract the relevant information 
+inside of that image to make an output classification)
+"""
+model.add(Conv2D(16, (3, 3), 1, activation='relu', input_shape=(256, 256, 3)))
+# apply a Max Pooling layer which is going to take the max value after the relu activation and return that value
+model.add(MaxPooling2D())
+
+# similarly add a convolution with 32 filters this time and relu activation
+model.add(Conv2D(32, (3, 3), 1, activation='relu'))
+model.add(MaxPooling2D())
+
+# similarly add a convolution with 16 filters again this time and relu activation
+model.add(Conv2D(16, (3, 3), 1, activation='relu'))
+model.add(MaxPooling2D())
+
+# flatten the data down
+model.add(Flatten())
+
+# add fully connected Dense layers with 256 neurons and relu activation
+model.add(Dense(256, activation='relu'))
+# add a final Dense layer with 1 neuron to get a single output that is going to represent 0 or 1 with a sigmoid activation (which will match our classes)
+model.add(Dense(1, activation='sigmoid'))
+
+# compile our model with adam optimizer and define what our losses are and an accuracy metric
+model.compile('adam', loss=tf.losses.BinaryCrossentropy(), metrics=['accuracy'])
+# model.summary()
+
 
 
