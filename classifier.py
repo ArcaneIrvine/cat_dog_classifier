@@ -106,5 +106,11 @@ model.add(Dense(1, activation='sigmoid'))
 model.compile('adam', loss=tf.losses.BinaryCrossentropy(), metrics=['accuracy'])
 # model.summary()
 
+# Train
+logdir = 'logs'
+# used for logging out the model training as its training, so we can come back and see how it performed at a particular time
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+# fit the model
+history = model.fit(train, epochs=20, validation_data=validation, callbacks=[tensorboard_callback])
 
 
