@@ -50,4 +50,13 @@ for idx, img in enumerate(batch[0][:4]):
     plt.show()
 """
 
+# pre-process data
+# scale data using map function (x is our image and y is the key)
+data = data.map(lambda x, y: (x/255, y))
+scaled_iterator = data.as_numpy_iterator()
+batch = scaled_iterator.next()
+
+print(batch[0].min())
+print(batch[0].max())
+
 
