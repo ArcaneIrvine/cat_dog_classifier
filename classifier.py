@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
 import matplotlib
@@ -111,6 +112,21 @@ logdir = 'logs'
 # used for logging out the model training as its training, so we can come back and see how it performed at a particular time
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
 # fit the model
-history = model.fit(train, epochs=20, validation_data=validation, callbacks=[tensorboard_callback])
+hist = model.fit(train, epochs=20, validation_data=validation, callbacks=[tensorboard_callback])
 
+# Plot our model performance using matplotlib
+fig = plt.figure()
+plt.plot(hist.history['loss'], color='teal', label='loss')
+plt.plot(hist.history['val_loss'], color='orange', label='val_loss')
+fig.suptitle('Loss', fontsize=20)
+plt.legend(loc='upper left')
+plt.show()
+
+# Plot our model accuracy using matplotlib
+fig = plt.figure()
+plt.plot(hist.history['accuracy'], color='teal', label='accuracy')
+plt.plot(hist.history['val_accuracy'], color='orange', label='val_accuracy')
+fig.suptitle('Accuracy', fontsize=20)
+plt.legend(loc='upper left')
+plt.show()
 
