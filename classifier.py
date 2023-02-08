@@ -145,3 +145,22 @@ for batch in test_size.as_numpy_iterator():
     acc.update_state(y, yhat)
 
 print(f'Precision:{pre.result().numpy()}, Recall:{re.result().numpy()}, Accuracy:{acc.result().numpy()}')
+
+# Test model on some images it has not seen before
+img = cv2.imread('test/dogtest.jpg')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+resized_img = tf.image.resize(img, (256, 256))
+plt.imshow(resized_img.numpy().astype(int))
+plt.show()
+
+# feed into the model (model expects a batch and not a single image, so we need to encapsulate it inside another set of arrays)
+np.expand_dims(resized_img, 0)
+result = model.predict(np.expand_dims(resized_img/255, 0))
+print(result)
+if result > 0.5:
+    print(f'Predicted class is Dog')
+else:
+    print(f'Predicted class is Cat')
+
+# Save the model
+model.save(os.path.join('models', 'cat_dog_model.h5'))
