@@ -12,20 +12,22 @@ while True:
     # Capture a frame from the webcam
     ret, frame = cap.read()
 
-    # Convert the frame to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # Resize the frame to the required input size for our classifier
-    resized_frame = cv2.resize(gray, (256, 256))
-    # Convert the resized frame to RGB
-    resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_GRAY2RGB)
-    # Get the predictions from the classifier
-    predictions = model.predict(np.expand_dims(resized_frame/255, 0))
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("p"):
+        # Convert the frame to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # Resize the frame to the required input size for our classifier
+        resized_frame = cv2.resize(gray, (256, 256))
+        # Convert the resized frame to RGB
+        resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_GRAY2RGB)
+        # Get the predictions from the classifier
+        predictions = model.predict(np.expand_dims(resized_frame/255, 0))
 
-    # Put the prediction on the frame
-    if predictions < 0.5:
-        cv2.putText(frame, "Cat", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
-    else:
-        cv2.putText(frame, "Dog", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
+        # Put the prediction on the frame
+        if predictions < 0.5:
+            cv2.putText(frame, "Cat", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
+        else:
+            cv2.putText(frame, "Dog", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
 
     # Show the frame
     cv2.imshow("Live Camera Feed", frame)
