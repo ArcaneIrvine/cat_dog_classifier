@@ -2,14 +2,14 @@
 Deep Neural Network Classifier that recognizes cat or dog images. This model is easy to use or even tweak it so it classifies different objects of your choice instead of cats or dogs. All you have to do is simply change the data from cats and dogs to objects of your desire!
 
 ## How it works
-- Grabbed image data off the web by a tool extension that downloads all the images from a single page into a zip file.
+- Grabbed image data off the web (used a tool to massively download images from a single page of cats/dogs)
 - Cleared the data by removing too small or faulty images 
 - Loaded the data
 - Scaled the data
 - Split the data
 - Built the NN model
 - Trained model on the data
-- PLot performance
+- Plot performance
 - Test the model
 - Saved the model
 
