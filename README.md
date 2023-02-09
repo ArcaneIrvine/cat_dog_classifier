@@ -29,4 +29,4 @@ A requirements.txt file has been made that includes all the libraries needed but
 - Run the script and wait for the training to finish and you now have the model of your desire saved in the 'models' directory
 
 ### Enjoy!
-
+* for the cam_identify.py script you need to hit 'p' after you have an image in front of your webcam ready to get identified and 'q' to close the webcam. 
