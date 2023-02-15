@@ -13,8 +13,7 @@ Deep Neural Network Classifier that recognizes cat or dog images. This model is 
 - Test the model
 - Saved the model
 
-## What you need to run it
-A requirements.txt file has been made that includes all the libraries needed but here is a more general list
+## Requirements
 - Python 3.9
 - Tensorflow
 - OpenCV
